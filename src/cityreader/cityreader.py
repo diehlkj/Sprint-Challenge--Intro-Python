@@ -9,8 +9,8 @@ class City():
         self.lat = lat
         self.lon = lon
 
-    def __repr__(self):
-        return f"<{self.name}, {self.lat}, {self.lon}>"
+    # def __repr__(self):
+    #     return f"<{self.name}, {self.lat}, {self.lon}>"
 
 
 # We have a collection of US cities with population over 750,000 stored in the
@@ -86,4 +86,34 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
     within = []
     # Go through each city and check to see if it falls within
     # the specified coordinates.
+    for city in cities:
+        if city.lat > lat1 and city.lat < lat2 and city.lon > lon1 and city.lon < lon2:
+            within.append(city)
+    print(within)
     return within
+
+def inputNormalize():
+    print("Enter lat1,lon1:")
+    coord1 = input("> ")
+    print("\nEnter lat2,lon2:")
+    coord2 = input("> ")
+
+    normal1 = [float(x.strip()) for x in coord1.split(",")]
+    normal2 = [float(x.strip()) for x in coord2.split(",")]
+    
+    allNormal = []
+    
+    if normal1[0] > normal2[0]:
+        allNormal.extend(normal2)
+        allNormal.extend(normal1)
+    else:
+      allNormal.extend(normal1)
+      allNormal.extend(normal2)
+    
+    print(normal1)
+    print(normal2)
+    print(allNormal)
+    
+    cityreader_stretch(allNormal[0], allNormal[1], allNormal[2], allNormal[3], cities)
+
+inputNormalize()
