@@ -37,11 +37,12 @@ def cityreader(cities=[]):
     with open("cities.csv") as csvfile:
         readCSV = csv.reader(csvfile, delimiter=",")
         for row in readCSV:
-            try:# if isinstance(row[3], float) and isinstance(row[4], float):
+            try:  # if isinstance(row[3], float) and isinstance(row[4], float):
                 cities.append(City(row[0], float(row[3]), float(row[4])))
             except Exception:
                 pass
     return cities
+
 
 cityreader(cities)
 
@@ -86,34 +87,38 @@ def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
     within = []
     # Go through each city and check to see if it falls within
     # the specified coordinates.
+    lat1, lon1, lat2, lon2 = inputNormalize(lat1, lon1, lat2, lon2)
+
     for city in cities:
         if city.lat > lat1 and city.lat < lat2 and city.lon > lon1 and city.lon < lon2:
             within.append(city)
     print(within)
     return within
 
-def inputNormalize():
-    print("Enter lat1,lon1:")
-    coord1 = input("> ")
-    print("\nEnter lat2,lon2:")
-    coord2 = input("> ")
 
-    normal1 = [float(x.strip()) for x in coord1.split(",")]
-    normal2 = [float(x.strip()) for x in coord2.split(",")]
-    
+def inputNormalize(lat1, lon1, lat2, lon2):
+
+    # normal1 = [float(x.strip()) for x in coord1.split(",")]
+    # normal2 = [float(x.strip()) for x in coord2.split(",")]
+
+    normal1 = [lat1, lon1]
+    normal2 = [lat2, lon2]
+
     allNormal = []
-    
+
     if normal1[0] > normal2[0]:
         allNormal.extend(normal2)
         allNormal.extend(normal1)
     else:
-      allNormal.extend(normal1)
-      allNormal.extend(normal2)
-    
+        allNormal.extend(normal1)
+        allNormal.extend(normal2)
+
     print(normal1)
     print(normal2)
     print(allNormal)
-    
-    cityreader_stretch(allNormal[0], allNormal[1], allNormal[2], allNormal[3], cities)
 
-inputNormalize()
+    return (allNormal[0], allNormal[1], allNormal[2], allNormal[3])
+
+
+# inputNormalize()
+# cityreader_stretch(32, -120, 45, -100, cities)
